@@ -90,6 +90,7 @@ class BazaarOrder(
 			val order = BazaarOrder.findById(sess, orderId) ?: return@trx 0.0
 
 			val profit = amount * order.pricePerItem
+			require(order.balance >= profit) { "Order does not have enough escrow balance" }
 
 			BazaarOrder.updateById(orderId, alsoUpdateTime(combine(
 				inc(BazaarOrder::fulfilledQuantity, amount),

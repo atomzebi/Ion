@@ -8,6 +8,7 @@ import net.horizonsend.ion.server.features.ai.configuration.AIEmities
 import net.horizonsend.ion.server.features.ai.configuration.AIPowerModes
 import net.horizonsend.ion.server.features.ai.configuration.steering.AIContextConfiguration
 import net.horizonsend.ion.server.features.ai.configuration.steering.AISteeringConfiguration
+import net.horizonsend.ion.server.features.economy.Taxation.CreditTaxConfiguration
 import net.horizonsend.ion.server.features.transport.NewTransport
 import net.horizonsend.ion.server.features.transport.TransportConfiguration
 import net.horizonsend.ion.server.miscellaneous.LegacyConfig
@@ -33,6 +34,8 @@ object ConfigurationFiles {
 	val globalGassesConfiguration = defineConfigurationFile<GlobalGassesConfiguration>(configurationFolder, "gasses")
 
 	val tradeConfiguration = defineConfigurationFile<TradeConfiguration>(configurationFolder, "trade")
+
+	val creditTaxConfiguration = defineConfigurationFile<CreditTaxConfiguration>(configurationFolder, "creditTax")
 
 	val aiSteeringConfiguration = defineConfigurationFile<AISteeringConfiguration>(configurationFolder, "aiSteering") { debugAudience.information("reloded aiSteering")}
 

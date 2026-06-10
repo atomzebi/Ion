@@ -62,6 +62,7 @@ import org.litote.kmongo.gt
 import org.litote.kmongo.inc
 import org.litote.kmongo.ne
 import java.util.function.Consumer
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 object Bazaars : IonServerComponent() {
@@ -699,8 +700,16 @@ object Bazaars : IonServerComponent() {
 
 		val result = FutureInputResult()
 
+		val remainingRequested = orderDocument.requestedQuantity - orderDocument.fulfilledQuantity
+		val remainingFunded = floor(orderDocument.balance / orderDocument.pricePerItem).toInt()
+		val maxFulfillable = minOf(remainingRequested, remainingFunded, limit)
+
+		if (maxFulfillable <= 0) {
+			return InputResult.FailureReason(listOf(text("That order no longer has enough escrow to fulfill.", RED)))
+		}
+
 		Tasks.sync {
-			val count = takePlayerItemsOfType(inventory, itemReference, minOf(orderDocument.requestedQuantity - orderDocument.fulfilledQuantity, limit))
+			val count = takePlayerItemsOfType(inventory, itemReference, maxFulfillable)
 
 			if (count == 0) {
 				result.complete(
